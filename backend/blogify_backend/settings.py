@@ -9,7 +9,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "blogify-backend-1xt7.onrender.com",  # your Render domain
+    "blogify-backend-1xt7.onrender.com"  # your Render domain
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',
