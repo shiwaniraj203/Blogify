@@ -7,5 +7,5 @@ urlpatterns = [
     path('auth/login/', views.login, name='login'),
     path('blogs/', views.BlogPostListCreateView.as_view(), name='blog-list-create'),
     path('blogs/<int:pk>/', views.BlogPostDetailView.as_view(), name='blog-detail'),
-    path('create-admin/', views.create_admin_user, name='create-admin'),  # Move this inside the list
+    # Removed temporary create-admin endpoint for security
 ]
