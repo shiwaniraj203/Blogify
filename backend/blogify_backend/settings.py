@@ -97,3 +97,23 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Auto-create admin user after migrations
+if os.environ.get('RENDER'):
+    def create_superuser():
+        try:
+            import django
+            django.setup()
+            from django.contrib.auth.models import User
+            
+            if not User.objects.filter(username='admin').exists():
+                User.objects.create_superuser(
+                    username='admin',
+                    email='admin@blogify.com',
+                    password='admin1234'
+                )
+                print("✅ Admin user created: admin/admin1234")
+        except Exception as e:
+            print(f"Admin creation skipped: {e}")
+    
+    # Create admin user
+    create_superuser()
