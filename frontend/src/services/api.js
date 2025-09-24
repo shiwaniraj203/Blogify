@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://10.210.162.149:8000/api';
+// Replace the API_URL with your backend URL
+const API_URL = process.env.REACT_APP_API_URL || 'https://blogify-backend-1xt7.onrender.com/api';
+
 const api = axios.create({
   baseURL: API_URL,
 });

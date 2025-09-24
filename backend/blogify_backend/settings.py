@@ -75,8 +75,11 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://10.210.162.149:3000",
+    "https://blogify-backend-1xt7.onrender.com",
 ]
+
+# Add this temporarily for deployment
+CORS_ALLOW_ALL_ORIGINS = True  # Only for deployment testing
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
