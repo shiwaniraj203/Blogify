@@ -5,12 +5,14 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-your-secret-key-here'
-DEBUG = True
+DEBUG = False  # Changed to False for production
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "blogify-backend-1xt7.onrender.com"  # your Render domain
 ]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Added for serving static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,16 +98,22 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images) settings
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For collectstatic
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = []  # Add custom static dirs here if needed
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Auto-create admin user after migrations
+
+# Auto-create admin user after migrations (only on Render)
 if os.environ.get('RENDER'):
     def create_superuser():
         try:
             import django
             django.setup()
             from django.contrib.auth.models import User
-            
+
             if not User.objects.filter(username='admin').exists():
                 User.objects.create_superuser(
                     username='admin',
@@ -112,8 +121,10 @@ if os.environ.get('RENDER'):
                     password='admin1234'
                 )
                 print("✅ Admin user created: admin/admin1234")
+            else:
+                print("ℹ️ Admin user already exists")
         except Exception as e:
             print(f"Admin creation skipped: {e}")
-    
+
     # Create admin user
     create_superuser()
